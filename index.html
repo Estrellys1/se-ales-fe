@@ -1,0 +1,835 @@
+# Crear el HTML con entidades HTML para caracteres especiales
+# Esto asegura que se vean bien independientemente de la codificaciÃ³n
+
+html_content = '''<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se&ntilde;ales de fe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #2d2d2d;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== TIPOGRAF&Iacute;A ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        /* ===== MEN&Uacute; SUPERIOR ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            z-index: 1000;
+            padding: 0.8rem 0;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a3a5c;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #1a3a5c;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #c9a959;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Men&uacute; hamburguesa para m&oacute;viles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #1a3a5c;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== SECCI&Oacute;N PORTADA ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(201, 169, 89, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(26, 58, 92, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: #1a3a5c;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #5a5a5a;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .btn-cta {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #1a3a5c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 58, 92, 0.3);
+        }
+
+        .btn-cta:hover {
+            background: #2c5282;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 92, 0.4);
+        }
+
+        .hero-note {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #7a7a7a;
+            font-style: italic;
+        }
+
+        /* ===== SECCIONES DE CONTENIDO ===== */
+        section {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            color: #1a3a5c;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            color: #2c5282;
+            margin: 2.5rem 0 1rem;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #5a5a5a;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cita destacada */
+        blockquote {
+            border-left: 4px solid #c9a959;
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+            background: rgba(201, 169, 89, 0.08);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #3a3a3a;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Separador dorado */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c9a959, transparent);
+            margin: 4rem 0;
+            border: none;
+        }
+
+        /* ===== SECCI&Oacute;N CRUZ DE POLVO ===== */
+        #cruz {
+            background: linear-gradient(180deg, #fafbfc 0%, #f5f7fa 100%);
+        }
+
+        /* ===== SECCI&Oacute;N SONIDO DEL AGUA ===== */
+        #agua {
+            background: linear-gradient(180deg, #eef2f7 0%, #e8eef5 100%);
+        }
+
+        /* ===== SECCI&Oacute;N N&Uacute;MERO 33 ===== */
+        #numero33 {
+            background: linear-gradient(180deg, #f8f9fa 0%, #f5f7fa 100%);
+            text-align: center;
+        }
+
+        .numero33-grande {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            color: rgba(201, 169, 89, 0.15);
+            line-height: 1;
+            margin: 2rem 0;
+            font-weight: 700;
+        }
+
+        /* ===== SECCI&Oacute;N VISIONES ===== */
+        #visiones {
+            background: linear-gradient(180deg, #1a2a3a 0%, #2c3e50 100%);
+            color: #e8e8e8;
+            max-width: 100%;
+            padding: 6rem 2rem;
+        }
+
+        #visiones h2 {
+            color: #a8d5ff;
+        }
+
+        #visiones h3 {
+            color: #7eb8ff;
+        }
+
+        #visiones p {
+            color: #d0d0d0;
+        }
+
+        #visiones blockquote {
+            background: rgba(168, 213, 255, 0.08);
+            border-left-color: #7eb8ff;
+            color: #e0e0e0;
+        }
+
+        .vision-block {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        /* ===== SECCI&Oacute;N REFLEXI&Oacute;N ===== */
+        #reflexion {
+            background: linear-gradient(180deg, #f5f7fa 0%, #fafbfc 100%);
+            text-align: center;
+        }
+
+        #reflexion p {
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #1a2a3a;
+            color: #a0a0a0;
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-symbol {
+            font-size: 1.5rem;
+            color: #c9a959;
+            margin: 1rem 0;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            .numero33-grande {
+                font-size: 5rem;
+            }
+        }
+
+        /* ===== ANIMACIONES SUAVES ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MEN&Uacute; SUPERIOR -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Se&ntilde;ales de fe</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#cruz">La cruz de polvo</a></li>
+                <li><a href="#agua">El sonido del agua</a></li>
+                <li><a href="#numero33">El n&uacute;mero 33</a></li>
+                <li><a href="#visiones">Visiones y presencias</a></li>
+                <li><a href="#reflexion">Reflexi&oacute;n</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PORTADA -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Se&ntilde;ales de fe</h1>
+            <p class="hero-subtitle">Relato de experiencias, recuerdos y visiones espirituales.</p>
+            <a href="#cruz" class="btn-cta">Leer el relato</a>
+            <p class="hero-note">Este sitio presenta un testimonio personal. No pretende ser una afirmaci&oacute;n cient&iacute;fica ni doctrinal.</p>
+        </div>
+    </section>
+
+    <!-- LA CRUZ DE POLVO -->
+    <section id="cruz">
+        <h2>La cruz formada con polvo</h2>
+        <p class="section-intro">Una figura que apareci&oacute; donde menos se esperaba.</p>
+        
+        <p>Porque estaba totalmente formada. No fue superstici&oacute;n: estaba totalmente formada; era como una imagen, una imagen de Cristo, pero hecha en polvo. Estaba perfectamente formada. Para m&iacute; era un mu&ntilde;eco, pero era la imagen de nuestro Se&ntilde;or.</p>
+
+        <p>Entonces yo le dije a mi mam&aacute;. Yo no pod&iacute;a decir nada, pero la &uacute;nica forma que pude dec&iacute;rselo fue decirle:</p>
+
+        <blockquote>
+            &ldquo;Mam&aacute;, vamos a traer a alguien para que le tome una foto.&rdquo;
+        </blockquote>
+
+        <p>Pero mi error fue que se lo dije a mi mam&aacute; y mi mam&aacute;, con su forma de ser, no me dej&oacute;. Dijo que despu&eacute;s ven&iacute;an ac&aacute; a hacer desorden y me dijo que desbaratara la cruz; que, si no la desbarataba yo, la desbarataba ella.</p>
+
+        <p>Bueno, luego, con mucho pesar, observ&eacute; m&aacute;s la cruz. Trat&eacute; de grab&aacute;rmela. Yo recuerdo que dije:</p>
+
+        <blockquote>
+            &ldquo;Esta cara de esta cruz yo la he visto en alg&uacute;n crucifijo que he visto en mi vida.&rdquo;
+        </blockquote>
+
+        <p>As&iacute; como aparec&iacute;an los ojos, eran grandes. As&iacute; como aparece el rostro sagrado que lo hizo una inteligencia artificial. Pues s&iacute;, los ojos eran grandes; eso s&iacute; me fij&eacute;. Tambi&eacute;n estaban cerrados, ah&iacute; en la imagen de la cruz.</p>
+
+        <p>Luego, luego de eso, pues ya la desbarat&eacute; con un precipacito y le puse la puntita de la escoba. Vamos a ver que se desbarat&oacute; toda. Entonces me di cuenta de que era puro polvo seco; muy poquito polvo estaba hecho.</p>
+
+        <p>La cruz, de forma misteriosa, &iquest;cierto?, porque no se forma una cruz en un polvo seco. No se forma.</p>
+
+        <p>Pero un f&iacute;sico me dijo, viejito, en esta &eacute;poca actual, me dijo hace poco que, de pronto, es que por medio del viento y el polvo encontraron una forma; una forma. Dios, pues, hizo as&iacute;, de esa forma que encontraron una forma, en los casos que pudo haberse formado la cruz as&iacute;, de esa forma.</p>
+
+        <p>Entonces yo, analizando y leyendo, me di cuenta de que existen unas piedras del equilibrio. Posiblemente cada part&iacute;cula de esa, de forma misteriosa, se cuadraron como una especie de rompecabezas y no se cayeron; por eso se form&oacute; la cruz. Esa es nuestra, mi humilde opini&oacute;n, pero no es as&iacute;, no s&eacute; c&oacute;mo sea, porque, como les dije, yo vi que cuando se estaba formando hab&iacute;a como un humo, una nube encima del polvo, pero demasiado finito, demasiado finito, en ese corte que hab&iacute;a de varias capas, de varios colores, como gris. No s&eacute; c&oacute;mo fue en realidad.</p>
+
+        <hr class="divider">
+
+        <p>Bueno, y luego ya nosotros no dec&iacute;amos nada. Ya con el tiempo s&iacute; fuimos diciendo; hablamos entre nosotros. Mi pap&aacute; nunca supo que fue mi mam&aacute; la que me mand&oacute; a quebrar la cruz, o no s&eacute;, no me acuerdo. Eso fue hace muchos a&ntilde;os.</p>
+
+        <p>Luego pas&oacute; el tiempo. Yo le dije a un cura, fue en el 2006 por ah&iacute;, lo que hab&iacute;a pasado. No le hab&iacute;a dicho a un cura lo que hab&iacute;a pasado; solamente a mis amistades.</p>
+    </section>
+
+    <!-- EL SONIDO DEL AGUA -->
+    <section id="agua">
+        <h2>El sonido del agua</h2>
+        <p class="section-intro">En tiempos de sequ&iacute;a, un ruido que no ten&iacute;a explicaci&oacute;n.</p>
+
+        <p>Luego hubo una sequ&iacute;a y entonces pas&oacute; el tiempo. Una sequ&iacute;a a nivel mundial. En Santa Marta no hab&iacute;a agua y se la pasaban orando en Colombia. Yo iba a las misas y ah&iacute; escuchaba y oraba tambi&eacute;n que hubiera agua.</p>
+
+        <p>Porque hab&iacute;a mucho incendio, mucho calor y no hab&iacute;a agua. En la casa no hab&iacute;a agua.</p>
+
+        <p>Una vez yo me lav&eacute; las puntitas de los dedos con una miguita de agua que hab&iacute;a y comenc&eacute; a decirme, a reflexionar:</p>
+
+        <blockquote>
+            &ldquo;El agua es algo m&aacute;s preciado que el oro.&rdquo;
+        </blockquote>
+
+        <p>Eso es cierto, as&iacute; dec&iacute;a, y le oraba a Dios.</p>
+
+        <p>Despu&eacute;s de eso, aproximadamente una semana m&aacute;s tarde, estaba yo en la cama, ya de madrugada. No estaba durmiendo; estaba pensando en algo agradable y me sent&iacute;a feliz. Entonces me dieron ganas de orinar.</p>
+
+        <p>Me levant&eacute; y fui al ba&ntilde;o viejo, donde hab&iacute;a aparecido la cruz. Ese ba&ntilde;o estaba junto a mi habitaci&oacute;n y ten&iacute;a una ventanita peque&ntilde;a en uno de los extremos.</p>
+
+        <p>Entonces, cuando entr&eacute; al ba&ntilde;o, escuch&eacute; un sonido como de agua. Era un sonido bastante fuerte, como una peque&ntilde;a cascada, o como si estuviera pasando por un micr&oacute;fono.</p>
+
+        <p>Como en Santa Marta no hab&iacute;a agua, me emocion&eacute;. Por un momento pens&eacute; que pod&iacute;a ser la llave, pero el sonido era demasiado fuerte y diferente.</p>
+
+        <p>Abr&iacute; la puerta y el sonido del agua desapareci&oacute;.</p>
+
+        <p>La cerr&eacute; y la volv&iacute; a abrir, y ya no se escuchaba nada.</p>
+
+        <p>Yo pens&eacute; que no pod&iacute;a ser un sonido normal de la casa y pens&eacute;:</p>
+
+        <blockquote>
+            &ldquo;En este ba&ntilde;o desapareci&oacute; la cruz.&rdquo;
+        </blockquote>
+
+        <p>Entr&eacute; al ba&ntilde;o con miedo. No despert&eacute; a mis padres porque me daba miedo que pensaran que estaba loca por estar escuchando agua donde no hab&iacute;a agua.</p>
+
+        <p>Orin&eacute; y revis&eacute; el piso. Al d&iacute;a siguiente pregunt&eacute;, de manera indirecta, si hab&iacute;a habido agua.</p>
+
+        <p>Me dijeron que no. Todos sab&iacute;an que no hab&iacute;a agua. En nuestra casa hab&iacute;a m&aacute;s agua que ah&iacute;; utiliz&aacute;bamos tanques y no hab&iacute;a agua saliendo de la llave.</p>
+
+        <p>Una semana despu&eacute;s, o alg&uacute;n tiempo despu&eacute;s, me despert&eacute; nuevamente con muchas ganas de orinar. Era de madrugada y corr&iacute; al ba&ntilde;o.</p>
+
+        <p>A la misma altura de aquella ventanita volv&iacute; a escuchar agua. Esta vez era menos fuerte, como si viniera de una llave.</p>
+
+        <p>Me qued&eacute; escuchando. Incluso aguant&eacute; las ganas de orinar. Yo estoy acostumbrada a aguantar porque, cuando me hacen ecograf&iacute;as, tambi&eacute;n tengo que hacerlo.</p>
+
+        <p>El miedo lo sent&iacute;a cuando ten&iacute;a que entrar al ba&ntilde;o, por lo de la cruz; mientras escuchaba el agua no ten&iacute;a miedo.</p>
+
+        <p>El sonido parec&iacute;a venir de una cascada peque&ntilde;a lejana y tambi&eacute;n como si estuviera pasando por un micr&oacute;fono. Era como agua, pero no exactamente.</p>
+
+        <p>Pens&eacute; que el agua estaba detr&aacute;s de la puerta, dentro del ba&ntilde;o. Pero cuando puse el o&iacute;do contra la puerta, no escuchaba nada. Cuando alejaba el o&iacute;do, el sonido se escuchaba fuerte a la altura de la ventana.</p>
+
+        <p>Yo pensaba que ten&iacute;a que escucharlo detr&aacute;s de la puerta. Puse el o&iacute;do contra ella y sent&iacute; como si el agua se hubiera recogido; segu&iacute;a escuch&aacute;ndose en la ventana y despu&eacute;s se convirti&oacute; en una l&iacute;nea recta detr&aacute;s de m&iacute;.</p>
+
+        <p>Pas&oacute; por mi lado y atraves&oacute; la pared que estaba junto a la puerta, donde est&aacute; actualmente el espejo. El espejo ya exist&iacute;a, aunque era diferente.</p>
+
+        <p>El sonido continu&oacute; en l&iacute;nea recta, cruz&oacute; por el extremo del ba&ntilde;o y, de alguna manera, parec&iacute;a entrar por la llave. Entonces sonaba como agua cayendo dentro de la llave. Yo lo sent&iacute;a.</p>
+
+        <p>Cuando retir&eacute; el o&iacute;do de la puerta, el sonido del agua solamente se escuchaba a la altura de la ventana.</p>
+
+        <p>Ya ten&iacute;a que orinar y dud&eacute; un poco en entrar porque en el ba&ntilde;o se hab&iacute;a aparecido la cruz hace a&ntilde;os en polvo hab&iacute;a aparecido la cruz. Yo sab&iacute;a que era algo divino.</p>
+
+        <p>Abr&iacute; la puerta y el sonido desapareci&oacute;.</p>
+
+        <p>Cerr&eacute; nuevamente la puerta y mir&eacute; por todas partes, especialmente el piso. No hab&iacute;a agua.</p>
+
+        <p>Orin&eacute; y me qued&eacute; un rato all&iacute;. Despu&eacute;s me fui a la cama y decid&iacute; no contarle a nadie lo que hab&iacute;a sucedido, porque despu&eacute;s ivan a pensar que estaba loca.</p>
+
+        <p>Meses despu&eacute;s se lo cont&eacute; a una amiga que iba con frecuencia a la casa y con quien ten&iacute;a confianza. Ella a veces hablaba de la iglesia, aunque no era muy religiosa.</p>
+
+        <p>Cuando le cont&eacute; lo que hab&iacute;a escuchado, me dijo:</p>
+
+        <blockquote>
+            &ldquo;Eso son obras de los &Aacute;ngeles.&rdquo;
+        </blockquote>
+
+        <p>Despu&eacute;s se lo cont&eacute; a mi mam&aacute; y a mi pap&aacute;. Mi pap&aacute; me pregunt&oacute;:</p>
+
+        <blockquote>
+            &ldquo;&iquest;Es verdad que escuchaste agua?&rdquo;
+        </blockquote>
+
+        <p>M&aacute;s adelante tambi&eacute;n se lo cont&eacute; a un sacerdote, pero como cinco o seis a&ntilde;os despu&eacute;s.</p>
+
+        <p>Aproximadamente cuatro o cinco meses despu&eacute;s de aquello, mi pap&aacute; muri&oacute;.</p>
+    </section>
+
+    <!-- EL N&Uacute;MERO 33 -->
+    <section id="numero33">
+        <h2>El n&uacute;mero 33</h2>
+        <p class="numero33-grande">33</p>
+        
+        <p>Mi hermano dijo que ten&iacute;amos que mudarnos a otra casa porque la casa iba a ser remodelada.</p>
+
+        <p>Nos mudamos aproximadamente el 11 de agosto. Recuerdo que habl&eacute; con un sacerdote el d&iacute;a 29.</p>
+
+        <p>Desde que escuch&eacute; el sonido del agua no hab&iacute;a tenido ning&uacute;n otro evento sobrenatural.</p>
+
+        <p>Yo no le cont&eacute; al sacerdote que ese d&iacute;a hab&iacute;a visto el n&uacute;mero 33 en una parada de bus, en un carro y en mi celular. Yo ya hab&iacute;a visto ese n&uacute;mero anteriormente, pero despu&eacute;s de aquel encuentro con el sacerdote empec&eacute; a verlo con frecuencia, especialmente en el celular.</p>
+
+        <p>El encuentro con el sacerdote hab&iacute;a sido un a&ntilde;o antes de ese 29 de julio, cuando ya est&aacute;bamos planeando mudarnos a comienzos de agosto. Todav&iacute;a veo el n&uacute;mero 33, aunque ahora lo veo con menos frecuencia.</p>
+
+        <p>Hay una cosa que ocurri&oacute; d&iacute;as antes.</p>
+
+        <p>Yo estaba preocupada porque el cuartico iba a quedar solo y sin mi supervisi&oacute;n durante la construcci&oacute;n. Entonces pens&eacute; que lo que hab&iacute;a aparecido all&iacute; significaba que &eacute;l estaba all&iacute;, cuidando el lugar donde estaba la cruz.</p>
+    </section>
+
+    <!-- VISIONES Y PRESENCIAS -->
+    <section id="visiones">
+        <h2>Visiones y presencias</h2>
+        <p class="section-intro">Experiencias que trascendieron lo ordinario.</p>
+
+        <div class="vision-block">
+            <h3>La figura transparente</h3>
+            <p>En 2024, entre el 29 de julio y el 11 de agosto, un d&iacute;a, aproximadamente al mediod&iacute;a, observ&eacute; que entraba much&iacute;simo sol por los espacios del techo. Tambi&eacute;n hab&iacute;a agua de lluvia y polvo en el cuartico, que anteriormente hab&iacute;a sido el ba&ntilde;o.</p>
+
+            <p>Antes de comenzar a buscar, de repente vi una figura transparente, sin una forma definida. Era como un contorno blanco muy poco brillante.</p>
+
+            <p>La transparencia y los bordes se parec&iacute;an a una s&aacute;bana arrugada, como si estuviera hecha una bola. Lo que se distingu&iacute;an eran los contornos blancos.</p>
+
+            <p>Despu&eacute;s vi una tela o vestimenta amarilla, muy hermosa. Ten&iacute;a algunos c&iacute;rculos o bolas rojas, delineados con l&iacute;neas rojas muy finas. El fondo era amarillo.</p>
+
+            <p>Cuando termin&oacute; esa tela amarilla, vi algo oscuro.</p>
+
+            <p>Yo nunca hab&iacute;a visto esa oscuridad, excepto una vez en un sue&ntilde;o muy corto.</p>
+
+            <p>Pens&eacute; que era la entrada a una habitaci&oacute;n que exist&iacute;a en la casa, porque se ve&iacute;a como un cuarto oscuro. Mientras lo estaba mirando, me parec&iacute;a completamente normal que hubiera una habitaci&oacute;n all&iacute;.</p>
+
+            <p>Pero cuando desapareci&oacute;, me di cuenta de que en realidad no hab&iacute;a ninguna habitaci&oacute;n ni ning&uacute;n lugar all&iacute;, y mucho menos algo tan oscuro.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="vision-block">
+            <h3>Cuando el piso se hizo bola</h3>
+            <p>El 16 de marzo, aproximadamente entre las 11 y las 12 del mediod&iacute;a, estaba haciendo los oficios de la casa r&aacute;pidamente porque ten&iacute;a muchas cosas que hacer en el computador.</p>
+
+            <p>Estaba lavando ropa. En el cuartico estaba escogiendo algunas cosas de la ropa sucia que ten&iacute;a dentro de una canasta. Estaba medio inclinada.</p>
+
+            <p>Entonces me inclin&eacute; con la ropa en las manos y, de repente, sent&iacute; que el piso directamente debajo de mis pies se hac&iacute;a como una bola.</p>
+
+            <p>Despu&eacute;s sent&iacute; que dos baldosas se levantaban y quedaban en posici&oacute;n vertical.</p>
+
+            <p>Sent&iacute; un dolor m&iacute;nimo en el centro, en el arco del pie. Yo casi no tengo arco en los pies.</p>
+
+            <p>En ese momento sent&iacute; como si hubiera volado unos cent&iacute;metros por encima del piso.</p>
+
+            <p>En mi mente apareci&oacute; una imagen, como de una caricatura, en la que se ve&iacute;a un par de pies completamente verticales, flotando. Eran transparentes y estaban delineados con un contorno blanco.</p>
+
+            <p>Mientras estaba flotando me sent&iacute; pesada. Despu&eacute;s de que apareci&oacute; ese dibujo mental, me sent&iacute; liviana, como si estuviera flotando.</p>
+
+            <p>En mi mente pregunt&eacute;:</p>
+
+            <blockquote>
+                &ldquo;&iquest;Estoy volando?&rdquo;
+            </blockquote>
+
+            <p>Pero antes de terminar de pensar la pregunta, todo volvi&oacute; a la normalidad.</p>
+
+            <p>Todo dur&oacute; solamente unos segundos.</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="vision-block">
+            <h3>La presencia de la Virgen</h3>
+            <p>Una noche quer&iacute;a volver a ver una pel&iacute;cula por segunda vez, la pel&iacute;cula de <em>El enemigo</em>. Al principio me dio miedo y dej&eacute; de verla.</p>
+
+            <p>Luego puse otra pel&iacute;cula y me fui a dormir al tercer cuarto porque all&iacute; hac&iacute;a m&aacute;s fresco.</p>
+
+            <p>Era aproximadamente medianoche. Las luces estaban apagadas y todo estaba oscuro.</p>
+
+            <p>Yo estaba acostada en una cama doble, encogida y mirando hacia la pared contraria, cerca del borde de la cama. Todav&iacute;a ten&iacute;a algo de miedo por lo que hab&iacute;a recordado de la pel&iacute;cula.</p>
+
+            <p>Entonces or&eacute; a Dios porque ten&iacute;a miedo. No quer&iacute;a quedarme sola; sent&iacute;a que no pod&iacute;a enfrentar al enemigo sola.</p>
+
+            <p>Con los ojos cerrados, sent&iacute; una presencia muy fuerte.</p>
+
+            <p>No era ansiedad. Era realmente como si alguien estuviera all&iacute;. Yo sent&iacute;a que hab&iacute;a alguien presente y no lo consideraba producto de mi imaginaci&oacute;n.</p>
+
+            <p>Despu&eacute;s escuch&eacute; una voz que parec&iacute;a venir de lejos.</p>
+
+            <p>Era la Virgen.</p>
+
+            <p>Me dijo algo as&iacute;:</p>
+
+            <blockquote>
+                &ldquo;Es la Virgen.&rdquo;
+            </blockquote>
+
+            <p>Despu&eacute;s escuch&eacute; un sonido de fondo muy r&aacute;pido, como si hubiera m&aacute;s voces que se acercaban. No s&eacute; exactamente qu&eacute; era.</p>
+
+            <p>Luego qued&oacute; todo en silencio.</p>
+
+            <p>Despu&eacute;s sent&iacute; unas manos transparentes. No las ve&iacute;a, pero las sent&iacute;a y sab&iacute;a que estaban all&iacute;. Eran como unas manos delineadas en blanco que me acariciaban el cabello, cerca de la oreja.</p>
+
+            <p>La presencia parec&iacute;a inclinarse hacia m&iacute;, pero no dijo nada m&aacute;s.</p>
+
+            <p>En mi mente apareci&oacute; una imagen, como una caricatura: una cabeza con un manto. Era la Virgen, vista de lado. Solamente se ve&iacute;a hasta debajo de los hombros.</p>
+
+            <p>La figura era transparente y estaba delineada con l&iacute;neas brillantes.</p>
+
+            <p>Despu&eacute;s la presencia desapareci&oacute;. Sent&iacute; que se iba, aunque yo no abr&iacute; los ojos.</p>
+
+            <p>Despu&eacute;s de eso no tuve miedo.</p>
+
+            <p>Pasaron algunos d&iacute;as y yo estaba sentada en la cama. Entonces vi una imagen de F&aacute;tima que ten&iacute;a en la habitaci&oacute;n y me di cuenta:</p>
+
+            <blockquote>
+                &ldquo;Es la F&aacute;tima.&rdquo;
+            </blockquote>
+        </div>
+
+        <hr class="divider">
+
+        <div class="vision-block">
+            <h3>La visi&oacute;n de Jes&uacute;s</h3>
+            <p>Una noche, un s&aacute;bado, casi a medianoche, estaba en el tercer cuarto porque hac&iacute;a mucho calor. Yo estaba acostada, mirando hacia los pies de la cama.</p>
+
+            <p>Estaba pensando en c&oacute;mo contarles a las personas las cosas sobrenaturales que me hab&iacute;an sucedido. Pensaba que al d&iacute;a siguiente pod&iacute;a ir a la iglesia y pedirle al sacerdote un micr&oacute;fono para contar lo que hab&iacute;a pasado, aunque a m&iacute; no me gusta hablar en p&uacute;blico.</p>
+
+            <p>Antes de terminar ese pensamiento, de repente vi a Jes&uacute;s, a Dios.</p>
+
+            <p>Ven&iacute;a hacia m&iacute; dentro de una especie de burbuja, o parec&iacute;a estar dentro de una burbuja. Yo no ve&iacute;a una burbuja como tal; simplemente ve&iacute;a esa forma alrededor de &eacute;l mientras se acercaba.</p>
+
+            <p>Lleg&oacute; hasta mi frente. Su frente qued&oacute; frente a la m&iacute;a, pero no lleg&oacute; a tocarme.</p>
+
+            <p>Su rostro era hermoso, con facciones finas y una piel muy bonita.</p>
+
+            <p>Llevaba una t&uacute;nica blanca y una tela azul que atravesaba la t&uacute;nica, como la que se usaba en su &eacute;poca.</p>
+
+            <p>El color azul era muy hermoso. Ese color se me qued&oacute; grabado en la memoria y me produjo paz. Era un azul claro, como el color del cielo.</p>
+
+            <p>Jes&uacute;s, o Dios, en aquella visi&oacute;n era m&aacute;s peque&ntilde;o de lo normal, de un tama&ntilde;o mediano, aproximadamente.</p>
+
+            <p>Estaba rodeado por algo transparente, delineado en blanco. Esa especie de transparencia ocultaba un poco los bordes de su cuerpo, parte del rostro y el cabello.</p>
+
+            <p>Cuando se acerc&oacute; a mi frente, sent&iacute; un amor muy grande.</p>
+
+            <p>Era el amor que yo siento por Jes&uacute;s y por Dios, pero era tan grande que yo no sab&iacute;a que pod&iacute;a llegar a sentir algo as&iacute;.</p>
+
+            <p>La visi&oacute;n dur&oacute; solamente unos segundos y despu&eacute;s desapareci&oacute;.</p>
+
+            <p>Yo me acomod&eacute; en la cama para dormir. Acomod&eacute; las almohadas y continu&eacute; acostada.</p>
+
+            <p>No sent&iacute; miedo durante la visi&oacute;n.</p>
+
+            <p>Despu&eacute;s escuch&eacute; unas gotas de agua.</p>
+
+            <p>El sonido era casi fuerte. Al principio parec&iacute;a que las gotas ven&iacute;an desde un lado de la habitaci&oacute;n y se desplazaban hacia el lado contrario, hacia el frente.</p>
+
+            <p>Pens&eacute; que tal vez pod&iacute;a ser producto de mi imaginaci&oacute;n.</p>
+
+            <p>Despu&eacute;s el sonido se fue desplazando hacia el lado donde estaba el ventilador. Las gotas fueron disminuyendo poco a poco.</p>
+
+            <p>El sonido dur&oacute; aproximadamente un minuto y despu&eacute;s desapareci&oacute;.</p>
+
+            <p>Entonces, junto con la visi&oacute;n, llegu&eacute; a pensar:</p>
+
+            <blockquote>
+                &ldquo;Todo no fue mi imaginaci&oacute;n.&rdquo;
+            </blockquote>
+
+            <p>Despu&eacute;s de analizarlo, sigo pensando que fue real.</p>
+
+            <p>Lo &uacute;nico que recuerdo con mucha claridad era el color azul de la tela que atravesaba la t&uacute;nica blanca.</p>
+
+            <p>Al d&iacute;a siguiente record&eacute; nuevamente su rostro y el resto de la visi&oacute;n.</p>
+
+            <p>Pasaron algunos d&iacute;as y vi un video musical de m&uacute;sica gregoriana. En el video aparec&iacute;a Jes&uacute;s de la Divina Misericordia, vestido con una t&uacute;nica blanca y con una tela azul que cruzaba su cuerpo de una manera parecida.</p>
+
+            <p>Por la forma de la vestimenta, pens&eacute; que pod&iacute;a tratarse de Jes&uacute;s de la Divina Misericordia.</p>
+
+            <p>Para m&iacute; fue una visi&oacute;n muy hermosa.</p>
+
+            <p>Fue la primera visi&oacute;n que tuve que fue tan hermosa y tan clara.</p>
+        </div>
+    </section>
+
+    <!-- REFLEXI&Oacute;N -->
+    <section id="reflexion">
+        <h2>Reflexi&oacute;n</h2>
+        
+        <p>Con el covid fue bastante fuerte. Mi mam&aacute; y yo nos acord&aacute;bamos de aquello. Mi mam&aacute; me dijo que pod&iacute;amos orar para que el virus se acabara. Antes de &Oacute;micron encendimos una vela.</p>
+
+        <p>Yo hab&iacute;a colocado una imagen de la Virgen de Guadalupe en el cuartico, en la zona peque&ntilde;a donde estaba el ba&ntilde;o. Esa imagen originalmente estaba en mi habitaci&oacute;n y yo la relacionaba con la oraci&oacute;n. Yo hab&iacute;a ganado esa imagen en la catedral o en la iglesia.</p>
+
+        <p>Era una imagen que estaba doblada, como un papel, y la hab&iacute;a colocado en la pared del ba&ntilde;o como un recuerdo de mi pap&aacute;.</p>
+
+        <p>Mi mam&aacute; encendi&oacute; una vela. Al d&iacute;a siguiente, en las noticias, dec&iacute;an que hab&iacute;a aparecido la Virgen de Guadalupe en Antioquia. Pues no s&eacute;, pero as&iacute; dec&iacute;an las noticias.</p>
+
+        <p>Despu&eacute;s vino covid y, por esa &eacute;poca, yo le cont&eacute; esto a un sacerdote.</p>
+
+        <hr class="divider">
+
+        <p>Estas experiencias, ocurridas a lo largo de los a&ntilde;os, han marcado profundamente mi vida. No busco imponer creencias ni afirmar verdades absolutas. Solo comparto lo que viv&iacute;, lo que sent&iacute; y lo que todav&iacute;a guardo en la memoria.</p>
+
+        <p>Quiz&aacute;s para algunos sean coincidencias. Para m&iacute;, son se&ntilde;ales. Se&ntilde;ales que me invitan a seguir creyendo, a seguir preguntando, a seguir buscando sentido en lo invisible.</p>
+
+        <p>Porque al final, como dije una vez:</p>
+
+        <blockquote>
+            &ldquo;El agua es algo m&aacute;s preciado que el oro.&rdquo;
+        </blockquote>
+
+        <p>Y tal vez, en medio de la sequ&iacute;a, lo m&aacute;s valioso no sea lo que podemos tocar, sino lo que podemos sentir.</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-symbol">&#9875;</div>
+        <p>Este sitio presenta un testimonio personal.</p>
+        <p>No pretende ser una afirmaci&oacute;n cient&iacute;fica ni doctrinal.</p>
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #707070;">&copy; 2026 Se&ntilde;ales de fe</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Men&uacute; hamburguesa para m&oacute;viles
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Cerrar men&uacute; al hacer clic en un enlace (m&oacute;vil)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Animaci&oacute;n fade-in al hacer scroll
+        const fadeElements = document.querySelectorAll('section > *');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+        });
+
+        // Smooth scroll para navegadores antiguos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>'''
+
+# Guardar con codificaci&oacute;n UTF-8 expl&iacute;cita
+with open('output/index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Archivo HTML regenerado con entidades HTML para caracteres especiales.")
